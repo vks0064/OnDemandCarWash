@@ -1,9 +1,10 @@
-package com.example.demo.controller;
+package com.ondemandcarwash.controller;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.exception.ApiRequestException;
-import com.example.demo.model.Customer;
-import com.example.demo.repository.CustomerRepository;
-import com.example.demo.service.CustomerService;
-import com.google.common.base.Optional;
+import com.ondemandcarwash.exception.ApiRequestException;
+import com.ondemandcarwash.model.Customer;
+import com.ondemandcarwash.repository.CustomerRepository;
+import com.ondemandcarwash.service.CustomerService;
 
 @RestController
 @RequestMapping("/customer")
@@ -62,7 +62,7 @@ public class CustomerController {
 		boolean isCustomerExist=customerRepository.existsById(id);
 		if(isCustomerExist) {
 			customerRepository.save(customer);
-			return new ResponseEntity<Object>("user updated successfully with id " +id, org.springframework.http.HttpStatus.OK);
+			return new ResponseEntity<Object>("user updated successfully with id " +id, HttpStatus.OK);
 		}
 		else 
 		{
@@ -78,7 +78,7 @@ public class CustomerController {
 		boolean isCustomerExist=customerRepository.existsById(id);
 		if(isCustomerExist) {
 			customerService.deleteById(id);
-			return new ResponseEntity<Object>("user deleted with id"+id,org.springframework.http.HttpStatus.OK);
+			return new ResponseEntity<Object>("user deleted with id"+id,HttpStatus.OK);
 		}
 		else
 		{
@@ -89,5 +89,6 @@ public class CustomerController {
 	
 
 }
+
 
 

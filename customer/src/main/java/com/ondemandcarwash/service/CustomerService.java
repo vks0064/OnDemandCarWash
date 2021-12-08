@@ -1,20 +1,21 @@
-package com.example.demo.service;
+package com.ondemandcarwash.service;
+ 
+	import java.util.List;
 
-import java.util.List;
+	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.stereotype.Service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+	import com.ondemandcarwash.model.Customer;
+	import com.ondemandcarwash.repository.CustomerRepository;
 
-import com.example.demo.model.Customer;
-import com.example.demo.repository.CustomerRepository;
+	@Service
+	public class CustomerService {
 
-@Service
-public class CustomerService {
-	
-	@Autowired
-	private CustomerRepository customerRepository;
-	
-	//For CREATING/ADDING  Customer 
+		@Autowired
+		private CustomerRepository customerRepository;
+		
+		
+		//For CREATING/ADDING  Customer 
 		public Customer addCustomer(Customer customer) {
 			return customerRepository.save(customer);
 			
@@ -34,5 +35,6 @@ public class CustomerService {
 		
 		
 	}
+
 
 
