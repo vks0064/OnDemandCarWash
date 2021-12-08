@@ -14,15 +14,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.ondemandcarwash.exception.ApiRequestException;
 import com.ondemandcarwash.model.Customer;
+import com.ondemandcarwash.model.Order;
 import com.ondemandcarwash.repository.CustomerRepository;
 import com.ondemandcarwash.service.CustomerService;
 
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
+	
+	@Autowired
+	private RestTemplate restTemplate;
 	
 	@Autowired
 	private CustomerService customerService;
@@ -86,6 +91,25 @@ public class CustomerController {
 		}
 
 	}
+	
+	
+	// For Adding Order
+	@PostMapping("/addorder")
+	public String addOrder (@RequestBody Order order)
+	{
+	return restTemplate.postForObject("http://localhost:8083/order/addorder", order , String.class);
+	}
+	// for Deleting Order
+	@DeleteMapping("/cancelorder/{id}")
+	public String deleteorder(@PathVariable("id") int id)
+	{
+	restTemplate.delete("http://localhost:8083/order/delete/"+id , String.class);
+	return "Your Order is successfully Canceled " + id;
+	}
+
+
+	
+	
 	
 
 }
