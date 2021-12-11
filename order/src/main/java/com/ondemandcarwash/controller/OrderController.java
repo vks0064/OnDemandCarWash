@@ -35,6 +35,13 @@ package com.ondemandcarwash.controller;
 			orderService.addOrder(order);
 			return "Order is Placed with Washer and will be Proceesed soon " + order;
 		}
+		
+		//Reading Order by id
+		@GetMapping("/order/{id}")
+		public Optional<Order> getCustomerById(@PathVariable int id) {
+		return orderRepository.findById(id);
+
+		}
 
 		// Reading all washer
 		@GetMapping("/allorders")

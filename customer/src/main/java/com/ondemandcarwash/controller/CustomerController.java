@@ -1,9 +1,13 @@
 package com.ondemandcarwash.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,9 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.common.net.MediaType;
 import com.ondemandcarwash.exception.ApiRequestException;
 import com.ondemandcarwash.model.Customer;
 import com.ondemandcarwash.model.Order;
+import com.ondemandcarwash.model.PaymentDetails;
+import com.ondemandcarwash.model.Ratings;
+import com.ondemandcarwash.model.WashPacks;
 import com.ondemandcarwash.repository.CustomerRepository;
 import com.ondemandcarwash.service.CustomerService;
 
@@ -107,10 +115,33 @@ public class CustomerController {
 	return "Your Order is successfully Canceled " + id;
 	}
 
+	//Reading all washpacks
+	@GetMapping("/allpacks")
+	public List<WashPacks> getallpack()
+	{
+	String baseurl="http://localhost:8081/admin/allpacks";
+	WashPacks[] allwashpack=restTemplate.getForObject(baseurl, WashPacks[].class);
 
+	return Arrays.asList(allwashpack);
+	}
+
+	//For adding ratings
+	@PostMapping("/addrating")
+	public String addrating(@RequestBody Ratings rating)
+	{
+	return restTemplate.postForObject("http://localhost:8081/admin/addrating", rating , String.class);
+	}
 	
-	
-	
+	//customer making an payment
+	@PostMapping("/payment")
+	public String payment(@RequestBody PaymentDetails payment) {
+
+
+	return restTemplate.postForObject("http://localhost:8084/payment/payments",payment, String.class);
+
+
+
+	}
 
 }
 
