@@ -2,6 +2,7 @@ package com.ondemandcarwash.model;
 
 public class WasherAuthResponse {
 	
+
 	private String Response;
 
 	public WasherAuthResponse(String response) {

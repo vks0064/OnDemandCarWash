@@ -1,11 +1,13 @@
 package com.ondemandcarwash.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ondemandcarwash.models.Admin;
+import com.ondemandcarwash.models.Ratings;
 import com.ondemandcarwash.repository.AdminRepository;
 
    @Service
@@ -38,6 +40,11 @@ import com.ondemandcarwash.repository.AdminRepository;
 	adminRepository.deleteById(id);
 
 	}
+	
+	public void deleteAdmin(Admin admin) {
+		adminRepository.delete(admin);
+		}
+	
 	}
 
 

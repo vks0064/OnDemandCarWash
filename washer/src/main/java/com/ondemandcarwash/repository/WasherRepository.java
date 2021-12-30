@@ -7,6 +7,7 @@ import com.ondemandcarwash.model.Washer;
 @Repository
 public interface WasherRepository extends MongoRepository<Washer, Integer> {
 	
+
 	Washer findBywEmail(String wEmail);
 
 

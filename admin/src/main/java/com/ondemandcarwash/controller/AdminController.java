@@ -1,5 +1,6 @@
 package com.ondemandcarwash.controller;
 
+     import java.util.Arrays;
      import java.util.List;
      import java.util.Optional;
 
@@ -22,13 +23,16 @@ package com.ondemandcarwash.controller;
 
 
     import com.ondemandcarwash.models.Admin;
+    import com.ondemandcarwash.models.Customer;
     import com.ondemandcarwash.models.Order;
     import com.ondemandcarwash.models.Ratings;
     import com.ondemandcarwash.models.WashPacks;
+    import com.ondemandcarwash.models.Washer;
     import com.ondemandcarwash.repository.AdminRepository;
     import com.ondemandcarwash.repository.RatingRepository;
     import com.ondemandcarwash.repository.WashPackRepository;
     import com.ondemandcarwash.service.AdminService;
+    import com.ondemandcarwash.service.RatingService;
 
 
 
@@ -45,6 +49,10 @@ package com.ondemandcarwash.controller;
       @Autowired
       private RatingRepository ratingrepository;
       
+      @Autowired
+      private RatingService ratingService;
+      
+      
 
       @Autowired
      private RestTemplate restTemplate;
@@ -56,24 +64,14 @@ package com.ondemandcarwash.controller;
       public Admin saveCustomer(@RequestBody Admin admin)
     {
       return adminService.addAdmin(admin);
-
-
-
     }
 
-
-
-
-
-     //Reading all Admin
+ //Reading all Admin
      @GetMapping("/alladmins")
-    public List<Admin> findAllCustomers()
+    public List<Admin> findAlladmin()
     {
    return adminService.getAdmins();
-
-
-
-   }
+    	}
 
 
 
@@ -82,7 +80,7 @@ package com.ondemandcarwash.controller;
     public Optional<Admin> getAdminById(@PathVariable int id)
    {
    return adminRepository.findById(id);
-   }
+   		}
 
 
 
@@ -91,16 +89,10 @@ package com.ondemandcarwash.controller;
        @PutMapping("/update/{id}")
      public ResponseEntity<Object> updateAdmin(@PathVariable int id, @RequestBody Admin admin)
     {
-
-
-
-      adminRepository.save(admin);
+    	   adminRepository.save(admin);
      return new ResponseEntity<Object>("Admininfo updated successfully with id " +id, HttpStatus.OK);
 
-
-
-
-     }
+    	}
 
 
 
@@ -108,15 +100,9 @@ package com.ondemandcarwash.controller;
      @DeleteMapping("/delete/{id}")
      public ResponseEntity<Object> deleteAdmin (@PathVariable int id)
      {
-
-
-
-    adminService.deleteById(id);
-   return new ResponseEntity<Object>("Admininfo deleted with id"+id,HttpStatus.OK);
-
-
-
-    }
+     adminService.deleteById(id);
+     return new ResponseEntity<Object>("Admininfo deleted with id"+id,HttpStatus.OK);
+     	}
 
 
     //Reading orders By
@@ -134,8 +120,8 @@ package com.ondemandcarwash.controller;
        public String getallOrder()
     {
     return restTemplate.getForObject("http://localhost:8083/order/allorders", String.class);
-
     }
+       
      //adding washpack by admin
        @PostMapping("/addpack")
        public String savepack(@RequestBody WashPacks pack)
@@ -143,12 +129,16 @@ package com.ondemandcarwash.controller;
        washpackrepository.save(pack);
        return " Pack saved successfully with id :"+pack.getId();
        }
+       
+       
        //get all washpack by admin
        @GetMapping("/allpacks")
        public List<WashPacks> getpack()
        {
        return washpackrepository.findAll();
        }
+       
+       
 
        @DeleteMapping("/deletepack/{id}")
        public String deletepack(@PathVariable int id)
@@ -157,19 +147,77 @@ package com.ondemandcarwash.controller;
        return "pack deleted with id "+id;
        }
        
-     //get mapping rating by admin
-       @GetMapping("/allratings")
-       public List<Ratings> getuser()
-       {
-       return ratingrepository.findAll();
-       }
-       //add rating by admin
+       
+      
+       
+     //Creating and adding ratings
        @PostMapping("/addrating")
-       public String saverating(@RequestBody Ratings rating)
+       public String saveRating(@RequestBody Ratings rating)
        {
-       ratingrepository.save(rating);
-       return " Thanks for Your Valuable feedback";
+       ratingService.addRating(rating);
+       return " Thanks for Your Valuable feedback" + rating;
        }
+
+
+       //Reading all ratings
+       @GetMapping("/allratings")
+       public List<Ratings> getAllRating()
+       {
+       return ratingService.getAllRating();
+       		}
+
+
+       //Read Rating By washerId
+       @GetMapping("/ratings/{id}")
+       public Optional<Ratings> getRatingById(@PathVariable int id)
+       {
+       return ratingrepository.findById(id);
+       		}
+
+
+
+       // Deleting Review by wId
+       @DeleteMapping("/deleterating/{id}")
+       public ResponseEntity<Object> deleteRating(@PathVariable int id)
+       {
+       ratingService.deleteRatingById(id);
+       return new ResponseEntity<Object>("Review is deleted with id" + id, HttpStatus.OK);
+       		}
+       
+     //Reading all Washer Details
+       @GetMapping("/allwashers")
+       public List<Washer> findAllWashers()
+       {
+       String baseurl="http://localhost:8085/washer/allwasher";
+       Washer[] allWashers=restTemplate.getForObject(baseurl, Washer[].class);
+       return Arrays.asList(allWashers);
+       		}
+
+
+       //Remove Washer By Id
+       @DeleteMapping("/removewasher/{id}")
+       public String removeWasher(@PathVariable("id") int id)
+       {
+       restTemplate.delete("http://localhost:8085/washer/delete/" +id , String.class);
+       return "Washer is successfully Removed " + id;
+       		}
+       
+     //reading all customer admin
+       @GetMapping("/allcustomers")
+       public List<Customer> findAllCustomers()
+       {
+       String baseurl="http://localhost:8082/customer/allcustomer";
+       Customer[] allcustomers=restTemplate.getForObject(baseurl, Customer[].class);
+       return Arrays.asList(allcustomers);
+       			}
+
+       //delete customer by admin through ID
+       @DeleteMapping("/removecustomer/{id}")
+       public String removeCustomer(@PathVariable("id") int id)
+       {
+       restTemplate.delete("http://localhost:8082/customer/delete/" +id , String.class);
+       return "Customer is successfully Removed " + id;
+       			}
      }
      
 	

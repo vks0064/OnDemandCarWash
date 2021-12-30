@@ -7,7 +7,6 @@ import com.ondemandcarwash.model.Customer;
 @Repository
 public interface CustomerRepository extends MongoRepository<Customer, Integer>{
 
-	 Customer findBycEmail(String cEmail);
-
+	 
 
 }

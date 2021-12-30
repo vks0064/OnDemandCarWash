@@ -7,42 +7,46 @@ package com.ondemandcarwash.model;
 	@Document(collection="Ratings")
 	public class Ratings {
 		
+		
 		@Id
-		//@NotEmpty(message = "Rating must not be empty")
+		int washerId;
 		int rating;
+		String review;
 		
-		//@NotEmpty(message = "Name must not be empty")
-		String washerName;
-		String comment;
-		
-		public Ratings(){
+		public Ratings() {
 			
 		}
 		
+		public int getWasherId() {
+			return washerId;
+		}
+		public void setWasherId(int washerId) {
+			this.washerId = washerId;
+		}
 		public int getRating() {
 			return rating;
 		}
 		public void setRating(int rating) {
 			this.rating = rating;
 		}
-		public String getWasherName() {
-			return washerName;
+		public String getReview() {
+			return review;
 		}
-		public void setWasherName(String washerName) {
-			this.washerName = washerName;
+		public void setReview(String review) {
+			this.review = review;
 		}
-		public String getComment() {
-			return comment;
-		}
-		public void setComment(String comment) {
-			this.comment = comment;
-		}
-		
 		@Override
 		public String toString() {
-			return "RatingDetails [rating=" + rating + ", washerName=" + washerName + ", comment=" + comment + "]";
+			return "Ratings [washerId=" + washerId + ", rating=" + rating + ", review=" + review + "]";
+		}
+		public Ratings(int washerId, int rating, String review) {
+			super();
+			this.washerId = washerId;
+			this.rating = rating;
+			this.review = review;
 		}
 		
 	}
-
-
+		
+		
+			

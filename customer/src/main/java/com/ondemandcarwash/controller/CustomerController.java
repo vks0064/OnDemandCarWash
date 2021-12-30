@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.google.common.net.MediaType;
-import com.ondemandcarwash.exception.ApiRequestException;
 import com.ondemandcarwash.model.Customer;
 import com.ondemandcarwash.model.Order;
 import com.ondemandcarwash.model.PaymentDetails;
@@ -61,10 +56,9 @@ public class CustomerController {
 	
 	//Reading Customer by ID
 	@GetMapping("/allcustomers/{id}")
-	public Optional<Customer> getCustomerById(@PathVariable int id) throws ApiRequestException
+	public Optional<Customer> getCustomerById(@PathVariable int id) 
 	{
-		return Optional.of(customerRepository.findById(id)
-				.orElseThrow(()-> new ApiRequestException("CUSTOMER NOT FOUND WITH THIS ID ::")));
+		return customerRepository.findById(id);
 	}
 	
 	
@@ -72,15 +66,9 @@ public class CustomerController {
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Object> updateCustomer(@PathVariable int id, @RequestBody Customer customer)
 	{
-		boolean isCustomerExist=customerRepository.existsById(id);
-		if(isCustomerExist) {
+		 
 			customerRepository.save(customer);
 			return new ResponseEntity<Object>("user updated successfully with id " +id, HttpStatus.OK);
-		}
-		else 
-		{
-			throw new ApiRequestException("CAN NOT UPDATE AS USER NOT FOUND WITH THIS ID ::");
-		}
 		
 	}
 	
@@ -88,15 +76,10 @@ public class CustomerController {
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Object> deleteCustomer (@PathVariable int id)
 	{
-		boolean isCustomerExist=customerRepository.existsById(id);
-		if(isCustomerExist) {
+		
 			customerService.deleteById(id);
 			return new ResponseEntity<Object>("user deleted with id"+id,HttpStatus.OK);
-		}
-		else
-		{
-			throw new ApiRequestException("CAN NOT DELETE AS USER NOT FOUND WITH THIS ID ::");
-		}
+				
 
 	}
 	
@@ -107,6 +90,8 @@ public class CustomerController {
 	{
 	return restTemplate.postForObject("http://localhost:8083/order/addorder", order , String.class);
 	}
+	
+	
 	// for Deleting Order
 	@DeleteMapping("/cancelorder/{id}")
 	public String deleteorder(@PathVariable("id") int id)

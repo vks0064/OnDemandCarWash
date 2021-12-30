@@ -14,7 +14,6 @@ package com.ondemandcarwash.controller;
 	import org.springframework.web.bind.annotation.RequestBody;
 	import org.springframework.web.bind.annotation.RequestMapping;
 	import org.springframework.web.bind.annotation.RestController;
-	import com.ondemandcarwash.exception.ApiRequestException;
 	import com.ondemandcarwash.model.Order;
 	import com.ondemandcarwash.repository.OrderRepository;
 	import com.ondemandcarwash.service.OrderService;
@@ -52,15 +51,12 @@ package com.ondemandcarwash.controller;
 		// Deleting order by Id
 		@DeleteMapping("/delete/{id}")
 		public ResponseEntity<Object> deleteOrder(@PathVariable int id) {
-			boolean isOrderExist = orderRepository.existsById(id);
-			if (isOrderExist) {
+			
+			
 				orderService.deleteById(id);
 				return new ResponseEntity<Object>("Order deleted with id" + id, HttpStatus.OK);
-			} else {
-				throw new ApiRequestException("CAN NOT DELETE ORDER ,AS ORDER NOT FOUND WITH THIS ID ::");
-			}
-
-		}
+			
+	}
 	}
 
 

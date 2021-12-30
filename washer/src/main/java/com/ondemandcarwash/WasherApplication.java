@@ -28,9 +28,13 @@ public class WasherApplication {
 	{
 	return new RestTemplate();
 	}
+	
+	
   public static final String WASHER_TAG = "washer service";
 	  
-	  @Bean public Docket swaggerConfiguration() { return new
+	  @Bean
+	  public Docket swaggerConfiguration()
+	  { return new
 	  Docket(DocumentationType.SWAGGER_2) .select()
 	  .paths(PathSelectors.ant("/washer/**"))
 	  .apis(RequestHandlerSelectors.basePackage("com.ondemandcarwash")) .build()

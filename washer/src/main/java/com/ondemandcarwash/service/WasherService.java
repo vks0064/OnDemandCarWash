@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import com.ondemandcarwash.model.Washer;
 import com.ondemandcarwash.repository.WasherRepository;
 
@@ -18,6 +19,7 @@ public class WasherService implements UserDetailsService {
 	
 	@Autowired
 	private WasherRepository washerRepository;
+	
     
 	//for creating/adding washer
 	public Washer addWasher(Washer washer) {
@@ -27,17 +29,22 @@ public class WasherService implements UserDetailsService {
 	
 	//
 	public List<Washer> getWashers() {
-		// TODO Auto-generated method stub
 		List<Washer> washer= washerRepository.findAll();
 		System.out.println("Getting Washer from DB" + washer);
 		return washer;
 	}
 
-
+	//For deleting washer by id 
 	public void deleteById(int id) {
 		washerRepository.deleteById(id);
-		
+		}
+	
+	
+	//for deleting washer
+	public void deleteWasher(Washer washer) {
+		washerRepository.delete(washer);
 	}
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Washer foundedWasher = washerRepository.findBywEmail(username);
@@ -49,6 +56,7 @@ public class WasherService implements UserDetailsService {
 	}
 
 }
+	
 
 
 
