@@ -1,47 +1,56 @@
 package com.ondemandcarwash.service;
- 
-	import java.util.List;
 
-	import org.springframework.beans.factory.annotation.Autowired;
-	import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+import java.util.List;
 
-	import com.ondemandcarwash.model.Customer;
-	import com.ondemandcarwash.repository.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-	@Service
-	public class CustomerService {
+import com.ondemandcarwash.model.Customer;
+import com.ondemandcarwash.repository.CustomerRepository;
 
-		@Autowired
-		private CustomerRepository customerRepository;
-		
-		
-		//For CREATING/ADDING  Customer 
-		public Customer addCustomer(Customer customer) {
-			return customerRepository.save(customer);
-			
-		}
-	     //For getting All Customers
-		public List<Customer> getCustomers() {
-			List<Customer> customers =customerRepository.findAll();
-			System.out.println("Getting Customers from DB" + customers);
-			return customers;
-		}
+@Service
+public class CustomerService implements UserDetailsService{
 
-		//For deleting By Id
-		public void deleteById(int id) {
-			customerRepository.deleteById(id);
-		}
-			
-			
-		
-		
-		//for deleting customer
-		public void deleteCustomer(Customer customer) {
-			customerRepository.delete(customer);
-		}
-		
+	@Autowired
+	private CustomerRepository customerRepository;
+	
+	
+	//For CREATING/ADDING  Customer 
+	public Customer addCustomer(Customer customer) {
+		return customerRepository.save(customer);
 		
 	}
+     //For getting All Customers
+	public List<Customer> getCustomers() {
+		List<Customer> customers =customerRepository.findAll();
+		System.out.println("Getting Customers from DB" + customers);
+		return customers;
+	}
 
-
-
+	//For deleting By Id
+	public void deleteById(int id) {
+		customerRepository.deleteById(id);
+		
+	}
+	//delete customer
+	public void deleteCustomer(Customer customer) {
+		customerRepository.delete(customer);
+	}
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Customer foundedCustomer = customerRepository.findBycEmail(username);
+		
+		if  (foundedCustomer ==null) return null;
+		String cEmail = foundedCustomer.getcEmail();
+		String cPassword = foundedCustomer.getcPassword();
+		return new User(cEmail, cPassword, new ArrayList<>());
+	}
+	
+	
+}

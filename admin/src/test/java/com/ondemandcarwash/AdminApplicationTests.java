@@ -38,9 +38,9 @@ class AdminApplicationTests {
 	@Test
 	public void getAdminTest() {
 	when(repository.findAll()).thenReturn(Stream
-	.of(new Admin(37, "vishal"),
-	new Admin(39, "Sachin"),
-	new Admin(38, "Sanket")).collect(Collectors.toList()));
+	.of(new Admin(37, "vishal", "vishal@gmail.com", "1234"),
+	new Admin(39, "Sachin","sachin@gmail.com","4343"),
+	new Admin(38, "Sanket","sanket@gmail.com","5454")).collect(Collectors.toList()));
 	assertEquals(3, service.getAdmins().size());
 	}
 	
@@ -48,7 +48,7 @@ class AdminApplicationTests {
 	// test All admin are save correctly
 	@Test
 	public void saveUserTest() {
-	Admin admin= new Admin(37, "vishal");
+	Admin admin= new Admin(37, "vishal","vishal@gmail.com","1234");
 	when(repository.save(admin)).thenReturn(admin);
 	assertEquals(admin, service.addAdmin(admin));
 	}
@@ -57,7 +57,7 @@ class AdminApplicationTests {
 	//test all admin deleted
 	@Test
 	public void deleteCustomerTest() {
-	Admin admin = new Admin(37, "vishal");
+	Admin admin = new Admin(37, "vishal","vishal@gmail.com","1234");
 	service.deleteAdmin(admin);
 	verify(repository, times(1)).delete(admin);
 	}

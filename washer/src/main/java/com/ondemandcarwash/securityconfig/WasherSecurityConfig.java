@@ -1,5 +1,7 @@
 package com.ondemandcarwash.securityconfig;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,6 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import com.ondemandcarwash.service.WasherService;
 
 	@EnableWebSecurity
@@ -34,12 +40,11 @@ import com.ondemandcarwash.service.WasherService;
 			http
 			.csrf().disable()
 			.authorizeRequests()
-			.antMatchers("/washer/addwasher", "/washer/auth")
+			.antMatchers("/washer/addwasher", "/washer/auth", "/washer/**")
 			.permitAll()
 			.anyRequest()
 			.authenticated().and().formLogin();
 		}
-
 		@Bean
 		public PasswordEncoder passwordEncoder() {
 			return NoOpPasswordEncoder.getInstance();
@@ -52,6 +57,18 @@ import com.ondemandcarwash.service.WasherService;
 			return super.authenticationManagerBean();
 
 		}
+		
+		@Bean
+	    CorsConfigurationSource corsConfigurationSource() {
+	        CorsConfiguration configuration = new CorsConfiguration();
+	        configuration.setAllowedMethods(Arrays.asList("http://localhost:4200"));
+	        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+
+	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	        source.registerCorsConfiguration("/**", configuration);
+
+	        return source;
+	    }
 
 	}
 
